@@ -5,11 +5,18 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { IconType } from 'react-icons';
 
 type Props = {
+   id: string;
    Icon: IconType | null;
    title: string;
+   deleteColumnHandler: (columnId: string) => void;
 };
 
-const Column: React.FC<Props> = ({ Icon, title }: Props) => {
+const Column: React.FC<Props> = ({
+   id,
+   Icon,
+   title,
+   deleteColumnHandler,
+}: Props) => {
    const [columnTitle, setColumnTitle] = useState(title);
 
    return (
@@ -28,7 +35,10 @@ const Column: React.FC<Props> = ({ Icon, title }: Props) => {
                <div className="p-1 rounded-lg hover:cursor-pointer hover:bg-gray-700">
                   <FaPlus />
                </div>
-               <div className="p-1 rounded-lg hover:cursor-pointer hover:bg-gray-700">
+               <div
+                  className="p-1 rounded-lg hover:cursor-pointer hover:bg-gray-700"
+                  onClick={() => deleteColumnHandler(id)}
+               >
                   <MdDeleteOutline className="w-[18px] h-[18px]" />
                </div>
             </div>

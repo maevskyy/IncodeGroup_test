@@ -11,10 +11,21 @@ const Columns = () => {
    const addNewColumnHandler = (newColumn: IColumn) =>
       setAllColumns((prevColumns) => [...prevColumns, newColumn]);
 
+   const deleteColumnHanlder = (columnId: string) =>
+      setAllColumns((prevColumns) =>
+         prevColumns.filter((column) => column.id !== columnId),
+      );
+
    return (
       <>
          {allColumns.map((column) => (
-            <Column key={column.id} title={column.title} Icon={column.Icon} />
+            <Column
+               key={column.id}
+               id={column.id}
+               title={column.title}
+               Icon={column.Icon}
+               deleteColumnHandler={deleteColumnHanlder}
+            />
          ))}
          <AddColumn addColumn={addNewColumnHandler} />
       </>

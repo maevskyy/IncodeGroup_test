@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { CiCirclePlus } from 'react-icons/ci';
 import { IColumn } from '../../entities/types';
-import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { FcPicture } from 'react-icons/fc';
-import Card from 'src/shared/UI/card';
-import { FaPlus } from 'react-icons/fa6';
+import AddColumnForm from './AddColumnForm';
 
 type Props = {
    addColumn: (newColumn: IColumn) => void;
 };
 
 const AddColumn: React.FC<Props> = ({ addColumn }: Props) => {
-   const [showAddingForm, setShowAddingForm] = useState(true);
+   const [showAddingForm, setShowAddingForm] = useState(false);
    const [columnTitle, setColumnTitle] = useState('');
 
+   // creating new column
    const add = () => {
       if (columnTitle === '') {
          return;
@@ -21,7 +20,7 @@ const AddColumn: React.FC<Props> = ({ addColumn }: Props) => {
       addColumn({
          id: String(new Date()),
          title: columnTitle,
-         Icon: null,
+         Icon: FcPicture,
          tasks: [],
       });
       setColumnTitle('');
@@ -30,29 +29,12 @@ const AddColumn: React.FC<Props> = ({ addColumn }: Props) => {
    return (
       <div className="flex gap-10">
          {showAddingForm ? (
-            <Card styles="h-fit w-[14em] flex items-center justify-between">
-               <form className="flex items-center gap-3">
-                  <FcPicture className="w-[24px] h-[24px]" />
-                  <input
-                     type="text"
-                     className="text-sm font-semibold bg-transparent border-b w-2/3 outline-none border-white"
-                     value={columnTitle}
-                     placeholder="Column title"
-                     onChange={(e) => setColumnTitle(e.target.value)}
-                  />
-               </form>
-               <div className="flex items-center gap-1 mr-[-5px]" onClick={add}>
-                  <div className="p-1 rounded-lg hover:cursor-pointer hover:bg-gray-700">
-                     <FaPlus />
-                  </div>
-                  <div
-                     onClick={() => setShowAddingForm(false)}
-                     className="p-1 rounded-lg hover:cursor-pointer hover:bg-gray-700"
-                  >
-                     <IoIosCloseCircleOutline className="w-[18px] h-[18px]" />
-                  </div>
-               </div>
-            </Card>
+            <AddColumnForm
+               title={columnTitle}
+               setTitle={setColumnTitle}
+               setShow={setShowAddingForm}
+               createColumn={add}
+            />
          ) : (
             <button
                onClick={() => setShowAddingForm(true)}
