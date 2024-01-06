@@ -14,7 +14,7 @@ module.exports = {
          env: {
             node: true,
          },
-         files: ['.eslintrc.{js,cjs}'],
+         files: ['.eslintrc.{js,cjs, ts}'],
          parserOptions: {
             sourceType: 'script',
          },
@@ -31,6 +31,10 @@ module.exports = {
          'warn',
          {
             endOfLine: 'auto',
+            singleQuote: true,
+            semi: false,
+            trailingComma: 'all',
+            tabWidth: 3,
          },
       ],
    },
