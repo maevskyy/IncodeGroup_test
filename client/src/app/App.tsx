@@ -1,7 +1,6 @@
 import React from 'react';
-import Main from 'src/widjets/main';
-import './styles/App.css';
 import Header from 'src/widjets/header';
+import Main from 'src/widjets/main';
 
 const App: React.FC = () => {
    return (
@@ -12,6 +11,6 @@ const App: React.FC = () => {
          </div>
       </div>
    );
-}
+};
 
 export default App;
