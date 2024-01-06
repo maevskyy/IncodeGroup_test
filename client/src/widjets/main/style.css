@@ -1,0 +1,3 @@
+.scrollbar_custom::-webkit-scrollbar {
+	width: 0px;
+}
