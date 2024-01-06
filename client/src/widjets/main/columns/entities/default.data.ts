@@ -6,18 +6,36 @@ export const defaultColums: IColumn[] = [
       id: '1pmvp',
       title: 'To-Do',
       Icon: FcBookmark,
-      tasks: [{ id: '1212', title: 'title' }],
+      tasks: [
+         {
+            id: '1212',
+            title: 'title',
+            description: 'lalalalalalalalalalaallaaal',
+         },
+      ],
    },
    {
       id: '1pmvp3',
       title: 'In progress',
       Icon: FcSerialTasks,
-      tasks: [{ id: '1212', title: 'title' }],
+      tasks: [
+         {
+            id: '1212',
+            title: 'title',
+            description: 'lalalalalalalalalalaallaaal',
+         },
+      ],
    },
    {
       id: '1pmv2p',
       title: 'Completed',
       Icon: FcCheckmark,
-      tasks: [{ id: '1212', title: 'title' }],
+      tasks: [
+         {
+            id: '1212',
+            title: 'title',
+            description: 'lalalalalalalalalalaallaaal',
+         },
+      ],
    },
 ];
