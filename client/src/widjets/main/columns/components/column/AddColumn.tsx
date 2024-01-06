@@ -26,6 +26,10 @@ const AddColumn: React.FC<Props> = ({ addColumn }: Props) => {
       setColumnTitle('');
    };
 
+   const buttonStyles = `flex gap-3 w-[14em] items-center py-[10px]
+    border h-fit rounded-lg px-4 py-2 border-gray-600 text-gray-400 hover:text-white hover:border-white
+    transition-colors cursor-pointer shadow-md`;
+
    return (
       <div className="flex gap-10">
          {showAddingForm ? (
@@ -38,7 +42,7 @@ const AddColumn: React.FC<Props> = ({ addColumn }: Props) => {
          ) : (
             <button
                onClick={() => setShowAddingForm(true)}
-               className="flex gap-3 w-[14em] items-center border h-fit rounded-lg px-4 py-2 border-gray-600 text-gray-400 hover:text-white hover:border-white transition-colors cursor-pointer shadow-md"
+               className={buttonStyles}
             >
                <CiCirclePlus className="w-[24px] h-[24px]" />
                <p className="text-sm font-semibold">Add new column</p>

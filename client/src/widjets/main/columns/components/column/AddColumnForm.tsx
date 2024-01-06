@@ -19,7 +19,7 @@ const AddColumnForm = ({ title, setTitle, createColumn, setShow }: Props) => {
             <FcPicture className="w-[20px] h-[20px]" />
             <input
                type="text"
-               className="text-sm font-semibold bg-transparent border-b w-2/3 outline-none border-white"
+               className="text-sm font-semibold bg-transparent pb-1 mt-1  border-b w-2/3 outline-none border-white"
                value={title}
                placeholder="Column title"
                onChange={(e) => setTitle(e.target.value)}
