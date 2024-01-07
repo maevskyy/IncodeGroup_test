@@ -2,32 +2,35 @@ import React, { useState } from 'react';
 import Card from 'src/shared/UI/card';
 import { FaPlus } from 'react-icons/fa6';
 import { MdDeleteOutline } from 'react-icons/md';
-import { IconType } from 'react-icons';
-import { ITask } from '../../entities/types';
+import { IColumn, TRDragAndDrop, TStateController } from '../../entities/types';
 import Task from '../task';
 import AddTaskForm from '../task/form/index';
 
 type Props = {
-   id: string;
-   Icon: IconType | null;
-   title: string;
-   tasks: ITask[];
-   deleteColumnHandler: (columnId: string) => void;
-   addNewTaskHandler: (columnId: string, task: ITask) => void;
-   deleteTaskHandler: (columnId: string, taskId: string) => void;
+   stateControllers: TStateController;
+   dragAndDrop: TRDragAndDrop;
+   columnFullInfo: IColumn;
 };
 
 const Column: React.FC<Props> = ({
-   id,
-   Icon,
-   title,
-   tasks,
-   deleteColumnHandler,
-   addNewTaskHandler,
-   deleteTaskHandler,
+   stateControllers,
+   dragAndDrop,
+   columnFullInfo,
 }: Props) => {
+   const { id, tasks, title, Icon } = columnFullInfo;
    const [columnTitle, setColumnTitle] = useState(title);
    const [showAddTask, setShowAddTask] = useState(false);
+
+   const { deleteColumnHandler, addNewTaskHandler, deleteTaskHandler } =
+      stateControllers;
+
+   const {
+      dragDropHandler,
+      dragEndHandler,
+      dragLeaveHandler,
+      dragOverHandler,
+      dragStartHandler,
+   } = dragAndDrop;
 
    return (
       <section className="flex flex-col gap-5">
@@ -64,12 +67,21 @@ const Column: React.FC<Props> = ({
             />
          )}
          {tasks.map((task) => (
-            <Task
+            <div
                key={task.id}
-               columnId={id}
-               deleteHandler={deleteTaskHandler}
-               {...task}
-            />
+               draggable={true}
+               onDragOver={(e) => dragOverHandler(e)}
+               onDragLeave={() => dragLeaveHandler()}
+               onDragStart={() => dragStartHandler(columnFullInfo, task)}
+               onDragEnd={(e) => dragEndHandler(e)}
+               onDrop={(e) => dragDropHandler(e, columnFullInfo, task)}
+            >
+               <Task
+                  columnId={id}
+                  deleteHandler={deleteTaskHandler}
+                  {...task}
+               />
+            </div>
          ))}
       </section>
    );
