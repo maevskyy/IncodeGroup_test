@@ -13,6 +13,13 @@ export interface IColumn {
    tasks: ITask[]
 }
 
+//It's not supposed to be here, but I don't want to complicate things too much.
+export interface ITable {
+   id: string,
+   title: string,
+   columns: IColumn[]
+}
+
 export type TStateController = {
    addNewColumnHandler: (newColumn: IColumn) => void;
    deleteColumnHandler: (columnId: string) => void;
