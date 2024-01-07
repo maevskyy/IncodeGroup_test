@@ -4,6 +4,7 @@ import { IoIosCloseCircleOutline } from 'react-icons/io';
 import Card from 'src/shared/UI/card';
 import { ITable } from '../../columns/entities/types';
 import { defaultColums } from '../../columns/entities/default.data';
+import { generateId } from 'src/shared/helpers/idGenerator';
 
 type Props = {
    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,7 +16,7 @@ const AddDashboardForm: React.FC<Props> = ({
    addTableHandler,
 }: Props) => {
    const mockProtoTable: ITable = {
-      id: String(new Date()),
+      id: generateId(),
       title: '',
       columns: defaultColums,
    };

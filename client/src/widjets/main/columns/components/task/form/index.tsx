@@ -3,6 +3,7 @@ import AddTaskInput from './AddTaskInput';
 import AddTaskTextarea from './AddTaskTextarea';
 import AddTaskButtons from './AddTaskButtons';
 import { ITask } from '../../../entities/types';
+import { generateId } from 'src/shared/helpers/idGenerator';
 
 type Props = {
    columnId: string;
@@ -29,7 +30,7 @@ const AddTaskForm = ({ setIsOpen, addNewTaskHandler, columnId }: Props) => {
          return;
       }
       addNewTaskHandler(columnId, {
-         id: String(new Date()),
+         id: generateId(),
          title: taskData.title,
          description: taskData.description,
       });

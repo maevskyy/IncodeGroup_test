@@ -3,6 +3,7 @@ import { CiCirclePlus } from 'react-icons/ci';
 import { IColumn } from '../../entities/types';
 import { FcPicture } from 'react-icons/fc';
 import AddColumnForm from './AddColumnForm';
+import { generateId } from 'src/shared/helpers/idGenerator';
 
 type Props = {
    addColumn: (newColumn: IColumn) => void;
@@ -18,7 +19,7 @@ const AddColumn: React.FC<Props> = ({ addColumn }: Props) => {
          return;
       }
       addColumn({
-         id: String(new Date()),
+         id: generateId(),
          title: columnTitle,
          Icon: FcPicture,
          tasks: [],

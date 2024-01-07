@@ -19,6 +19,10 @@ const Columns: React.FC<Props> = ({ currentTable, setAllTables }: Props) => {
    // dragLeave, dragOver and so on
    const dragAndDrop = useDranNDrop(setAllColumns);
 
+   useEffect(() => {
+      setAllColumns(currentTable.columns);
+   }, [currentTable]);
+
    //updating main Table state
    useEffect(() => {
       setAllTables((prevTables) =>

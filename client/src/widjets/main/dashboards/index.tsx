@@ -10,6 +10,12 @@ type Props = {
    tableAndPageHandler: (table: ITable) => void;
    deleteTableHandler: (tableId: string) => void;
    addTableHandler: (table: ITable) => void;
+   setCurrentTableInfo: React.Dispatch<
+      React.SetStateAction<{
+         title: string;
+         id: string;
+      }>
+   >;
 };
 
 const Dashboards: React.FC<Props> = ({
@@ -17,17 +23,20 @@ const Dashboards: React.FC<Props> = ({
    tableAndPageHandler,
    deleteTableHandler,
    addTableHandler,
+   setCurrentTableInfo,
 }: Props) => {
    const [showAddDashboard, setShowAddDashboard] = useState(false);
+
+   const clickOnTable = (table: ITable) => {
+      tableAndPageHandler(table);
+      setCurrentTableInfo({ title: table.title, id: table.id });
+   };
 
    return (
       <div className="flex items-center justify-center w-full">
          <div className="w-[20em] flex flex-col gap-5 ">
             {allTables.map((table) => (
-               <button
-                  key={table.id}
-                  onClick={() => tableAndPageHandler(table)}
-               >
+               <button key={table.id} onClick={() => clickOnTable(table)}>
                   <Card styles="w-full flex text-center hover:cursor-pointer hover:scale-[1.05] transition-transform">
                      <h4 className="self-center flex-1">{table.title}</h4>
                      <button
