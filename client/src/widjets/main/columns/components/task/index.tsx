@@ -32,9 +32,12 @@ const Task: React.FC<Props> = ({
                <MdDeleteOutline className="w-[18px] h-[18px]" />
             </div>
          </div>
-         {description && <p className="text-xs text-gray-300">{description}</p>}
+         {description && (
+            <p className="text-xs text-gray-300 break-words">{description}</p>
+         )}
       </Card>
    );
 };
 
 export default Task;
+

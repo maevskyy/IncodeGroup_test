@@ -12,7 +12,9 @@ export const useDranNDrop = (setAllBoards: React.Dispatch<React.SetStateAction<I
     };
 
     const dragLeaveHandler = () => {
-        // e.target.style.boxShadow = 'none'; // <- Пока закомментируем это, так как нет определения e.target
+        //!FIX
+        // make some styles
+        // e.target.style.boxShadow = 'none'; 
     };
 
     const dragStartHandler = (board: IColumn, task: ITask) => {
