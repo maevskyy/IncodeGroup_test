@@ -10,7 +10,7 @@ export interface IColumn {
    id: string
    title: string
    Icon: IconType | null
-   tasks: ITask[] | []
+   tasks: ITask[]
 }
 
 export type TStateController = {
@@ -29,5 +29,6 @@ export type TRDragAndDrop = {
       e: React.DragEvent<HTMLElement>,
       board: IColumn,
       task: ITask,
-   ) => void
+   ) => void;
+   dropCardHandler: (e: React.DragEvent<HTMLElement>, board: IColumn) => void
 };

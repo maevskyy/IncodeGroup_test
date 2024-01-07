@@ -17,7 +17,11 @@ const Columns: React.FC = () => {
    return (
       <>
          {allColumns.map((column) => (
-            <div key={column.id}>
+            <div
+               key={column.id}
+               onDragOver={(e) => dragAndDrop.dragOverHandler(e)}
+               onDrop={(e) => dragAndDrop.dropCardHandler(e, column)}
+            >
                <Column
                   columnFullInfo={column}
                   stateControllers={stateControllers}

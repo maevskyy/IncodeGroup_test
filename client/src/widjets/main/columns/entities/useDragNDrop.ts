@@ -9,13 +9,10 @@ export const useDranNDrop = (setAllBoards: React.Dispatch<React.SetStateAction<I
 
     const dragOverHandler = (e: React.DragEvent<HTMLElement>) => {
         e.preventDefault();
-        // if (e.target.className == 'item') {
-        //    e.target.style.boxShadow = '0 4px 3px gray';
-        // }
     };
 
     const dragLeaveHandler = () => {
-        // e.target.style.boxShadow = 'none';
+        // e.target.style.boxShadow = 'none'; // <- Пока закомментируем это, так как нет определения e.target
     };
 
     const dragStartHandler = (board: IColumn, task: ITask) => {
@@ -30,30 +27,50 @@ export const useDranNDrop = (setAllBoards: React.Dispatch<React.SetStateAction<I
         }
     };
 
-    const dragDropHandler = (e: React.DragEvent<HTMLElement>, board: IColumn, task: ITask) => {
+    const dragDropHandler = (e: React.DragEvent<HTMLElement>, board: IColumn) => {
         e.preventDefault();
-        // delete
         if (currentBoard && currentItem) {
-            //! FIX type
-            //@ts-expect-error
-            const currentIndex = currentBoard.tasks.indexOf(currentItem);
-            currentBoard.tasks.splice(currentIndex, 1);
-            //! FIX type
-            //@ts-expect-error
-            const dropIndex = board.tasks.indexOf(task);
-            board.tasks.splice(dropIndex + 1, 0, currentItem);
-
             setAllBoards(prevColumns =>
                 prevColumns.map((b) => {
                     if (b.id === board.id) {
-                        return board;
+                        return {
+                            ...b,
+                            tasks: [...b.tasks, currentItem],
+                        };
                     }
-                    if (b.id === currentBoard?.id) {
-                        return currentBoard;
+                    if (b.id === currentBoard.id) {
+                        return {
+                            ...b,
+                            tasks: b.tasks.filter(t => t !== currentItem),
+                        };
                     }
                     return b;
                 }),
             );
+            setCurrentItem(null);
+        }
+    };
+
+    const dropCardHandler = (e: React.DragEvent<HTMLElement>, board: IColumn) => {
+        e.preventDefault();
+        if (currentBoard !== null && currentItem !== null) {
+            if (currentItem !== null && currentItem !== undefined) {
+                board.tasks.push(currentItem);
+                const currentIndex = currentBoard.tasks.indexOf(currentItem);
+                currentBoard.tasks.splice(currentIndex, 1);
+
+                setAllBoards(prevColumns =>
+                    prevColumns.map((b) => {
+                        if (b.id === board.id) {
+                            return board;
+                        }
+                        if (b.id === currentBoard.id) {
+                            return currentBoard;
+                        }
+                        return b;
+                    }),
+                );
+            }
         }
     };
 
@@ -62,6 +79,7 @@ export const useDranNDrop = (setAllBoards: React.Dispatch<React.SetStateAction<I
         dragLeaveHandler,
         dragStartHandler,
         dragEndHandler,
-        dragDropHandler
-    }
-} 
+        dragDropHandler,
+        dropCardHandler
+    };
+};
