@@ -6,9 +6,9 @@ import { isBodyEmpty } from "../middleware/validation/body.validation.js";
 const router = Router()
 const controllers = new TableController()
 
-router.get('/',)
+router.get('/:tableId', controllers.getTable)
 router.post('/', isBodyEmpty, tableValidator, controllers.createTable)
 router.patch('/')
-router.delete('/')
+router.delete('/:tableId', controllers.deleteTable)
 
 export default router
