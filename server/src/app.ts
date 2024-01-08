@@ -5,6 +5,8 @@ import { IConfigService } from "./config/config.interface.js";
 import { ConfigService } from "./config/config.service.js";
 import winston from "winston";
 import mongoose from "mongoose";
+import { errorHandler } from "./middleware/errorHandler.js";
+import tablesRoutes from './routes/tables.routes.js'
 
 class App {
     private app: Express;
@@ -16,6 +18,7 @@ class App {
         this.port = port;
 
         this.config();
+        this.rootRoutes()
         this.runServer(configService);
 
         this.logger = winston.createLogger({
@@ -39,8 +42,16 @@ class App {
             credentials: true
         }));
     }
+    private rootRoutes() {
+        this.app.use('/tables?', tablesRoutes)
+    }
 
     private runServer(configService: IConfigService) {
+        const mongoUrl = configService.get('MONGO_URL');
+        if (!mongoUrl) {
+            this.logger.error('MONGO_URL is not configured properly.');
+            process.exit(1);
+        }
         mongoose
             .connect(configService.get('MONGO_URL'))
             .then(() => {
@@ -53,6 +64,8 @@ class App {
     }
 
     private loogerConfig() {
+        this.app.use(errorHandler);
+
         process.on('uncaughtException', (error) => {
             this.logger.error(`Uncaught Exception: ${error.message}`);
             process.exit(1);

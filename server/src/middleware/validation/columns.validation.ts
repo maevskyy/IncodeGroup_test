@@ -7,16 +7,16 @@ const taskSchema = Joi.object({
     description: Joi.string(),
 });
 
-const columnsSchema = Joi.object({
+export const columnsSchema = Joi.object({
     id: Joi.string().length(8).required(),
     title: Joi.string().required(),
-    tasks: Joi.array().items(taskSchema),
+    tasks: Joi.array().items(taskSchema)
 });
 
-export const columnsValidator = (req: Request, res: Response, next: NextFunction) => {
+export const columnsValidator = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body;
-        columnsSchema.validateAsync(data);
+        await columnsSchema.validateAsync(data);
         next();
     } catch (error) {
         if (Joi.isError(error)) {

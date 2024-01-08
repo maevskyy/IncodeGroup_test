@@ -1,20 +1,25 @@
 import Joi from "joi";
 import { Request, Response, NextFunction } from "express";
-
-const objectIdSchema = Joi.string().regex(/^[0-9a-fA-F]{24}$/);
+import { columnsSchema } from "./columns.validation.js";
+import winston from "winston/lib/winston/config/index.js";
+import { log } from "winston";
 
 const validateSchema = Joi.object({
     id: Joi.string().length(8).required(),
     title: Joi.string().min(2).max(30).required(),
-    columns: Joi.array().items(objectIdSchema)
+    columns: Joi.array().items(columnsSchema).min(3).required()
 })
 
-export const tableValidator = (req: Request, res: Response, next: NextFunction) => {
+export const tableValidator = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = req.body
-        validateSchema.validateAsync(data)
+        await validateSchema.validateAsync(data)
+        for (const column of data.columns) {
+            await columnsSchema.validateAsync(column);
+        }
         next()
     } catch (error) {
+
         if (Joi.isError(error)) {
             res.status(400).json({ ok: false, message: "Validation error", details: error.details });
         } else {
