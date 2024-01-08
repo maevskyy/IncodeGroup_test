@@ -44,14 +44,19 @@ export class TableController implements ITableController {
             res.status(500).json({ ok: false, message: "Cannot create table", error: error })
         }
     }
-    updateTable(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+
     async deleteTable(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
         const { tableId } = req.params
         try {
-            const table = await tableModel.findByIdAndDelete(tableId)
+            const table = await tableModel.findById(tableId)
             if (table) {
+
+                const columns = table.columns
+                //deleting all columns
+                await Promise.all(columns.map(columnId => columnModel.findByIdAndDelete(columnId)))
+                await tableModel.findByIdAndDelete(tableId)
+
+
                 res.status(200).json({ ok: true, message: "Table deleted" });
             } else {
                 res.status(404).json({ ok: false, message: "Table not found", data: null });
@@ -60,16 +65,5 @@ export class TableController implements ITableController {
             res.status(500).json({ ok: false, message: "Internal Server Error", error: error });
         }
     }
-    createTask(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-    updateTask(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-    deleteTask(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-
-
 
 }
