@@ -16,6 +16,7 @@ router.delete('/:tableId', tableControllers.deleteTable)
 
 //column
 router.post('/column/:tableId', isBodyEmpty, columnsValidator, columnControllers.createColumn)
+router.patch('/column/:columnId', isBodyEmpty, columnControllers.updateColumn)
 router.delete('/column/:tableId/:columnId', columnControllers.deleteColumn)
 
 export default router

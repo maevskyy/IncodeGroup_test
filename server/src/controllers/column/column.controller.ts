@@ -4,7 +4,6 @@ import { ParsedQs } from "qs";
 import { IColumnController } from "./column.interface.js";
 import columnModel, { IColumn } from "../../models/column.model.js";
 import tableModel from "../../models/table.model.js";
-import { table } from "console";
 
 export class ColumnController implements IColumnController {
 
@@ -50,14 +49,34 @@ export class ColumnController implements IColumnController {
             res.status(200).json({ ok: true, message: 'Column deleted' })
 
         } catch (error) {
-            //!type fix
-            //@ts-ignore
-            res.status(500).json({ ok: false, message: "Cannot delete column", error: error.message });
+            if (error instanceof Error) {
+                res.status(500).json({ ok: false, message: 'Cannot delete column', error: error.message });
+            } else {
+                res.status(500).json({ ok: false, message: 'Cannot delete column', error: 'Unknown error' });
+            }
 
         }
     }
-    updateColumn(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateColumn(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
+        const { columnId } = req.params
+        const { title } = req.body
+
+        try {
+            const updatedColumn = await columnModel.findByIdAndUpdate(columnId, { title }, { new: true });
+
+            if (updatedColumn) {
+                res.status(200).json({ ok: true, message: 'Column updated', data: updatedColumn });
+            } else {
+                res.status(404).json({ ok: false, message: 'Column not found', data: null });
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                res.status(500).json({ ok: false, message: 'Cannot update column', error: error.message });
+            } else {
+                res.status(500).json({ ok: false, message: 'Cannot update column', error: 'Unknown error' });
+            }
+        }
+
     }
 
 }
