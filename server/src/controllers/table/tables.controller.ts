@@ -4,25 +4,37 @@ import { ParsedQs } from "qs";
 import { ITableController } from "./table.interface.js";
 import tableModel from "../../models/table.model.js";
 import columnModel, { IColumn } from "../../models/column.model.js";
+import { Types } from "mongoose";
 
 export class TableController implements ITableController {
 
-    async getTable(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
-        const { tableId } = req.params
-        try {
-            const table = await tableModel.findById(tableId)
-            if (table) {
-                const columnsData = await Promise.all(table.columns.map(columnId => columnModel.findById(columnId)));
-                const joinedTable = { ...table.toObject(), columns: columnsData };
+    async getTable(req: Request, res: Response): Promise<void> {
+        const { tableId } = req.params;
 
-                res.status(200).json({ ok: true, message: "Table found", data: joinedTable });
+        try {
+            let table;
+
+            if (tableId.length === 8) {
+                table = await tableModel.findOne({ id: tableId });
+            } else if (Types.ObjectId.isValid(tableId)) {
+                table = await tableModel.findById(tableId);
             } else {
-                res.status(404).json({ ok: false, message: "Table not found", data: null });
+                res.status(400).json({ ok: false, message: 'Invalid tableId format', data: null });
             }
+
+            if (table) {
+              const columnsData = await Promise.all(table.columns.map((columnId) => columnModel.findById(columnId)));
+              const joinedTable = { ...table.toObject(), columns: columnsData };
+
+              res.status(200).json({ ok: true, message: 'Table found', data: joinedTable });
+          } else {
+              res.status(404).json({ ok: false, message: 'Table not found', data: null });
+          }
         } catch (error) {
-            res.status(500).json({ ok: false, message: "Internal Server Error", error: error });
+            res.status(500).json({ ok: false, message: 'Internal Server Error', error: error });
         }
     }
+
     async createTable(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
         const { columns, ...tableWithoutColumns } = req.body
 
@@ -35,11 +47,11 @@ export class TableController implements ITableController {
 
             const createdColumnIds = await Promise.all(createColumnPromises);
 
-            await tableModel.create({
+            const createdTable = await tableModel.create({
                 ...tableWithoutColumns,
                 columns: createdColumnIds,
             })
-            res.status(200).json({ ok: true, message: 'Table created' })
+            res.status(200).json({ ok: true, message: 'Table created', table: { _id: createdTable._id } })
         } catch (error) {
             res.status(500).json({ ok: false, message: "Cannot create table", error: error })
         }
@@ -47,6 +59,7 @@ export class TableController implements ITableController {
 
     async deleteTable(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): Promise<void> {
         const { tableId } = req.params
+
         try {
             const table = await tableModel.findById(tableId)
             if (table) {
