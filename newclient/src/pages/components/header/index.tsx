@@ -1,8 +1,13 @@
 import React from 'react';
 import { CiSearch } from 'react-icons/ci';
 import Card from 'src/shared/UI/card';
+import DashBoardAndInfo from './components/DashBoardAndInfo';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
+	const location = useLocation();
+	const currentPathname = location.pathname.split('/');
+
 	return (
 		<header className='flex justify-between border-b pb-5'>
 			<div className='flex items-center gap-2'>
@@ -19,12 +24,9 @@ const Header = () => {
 				<button className='button_style'>Load</button>
 			</div>
 
-			{/* {currentPage === ECurrentPage.Tables && (
-       <DashBoardAndInfo
-          currentTableInfo={currentTableInfo}
-          setCurrentPage={setCurrentPage}
-       />
-    )} */}
+			{currentPathname[1] === 'table' && (
+				<DashBoardAndInfo currentPathname={currentPathname} />
+			)}
 		</header>
 	);
 };
