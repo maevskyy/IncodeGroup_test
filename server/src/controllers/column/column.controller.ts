@@ -43,7 +43,8 @@ export class ColumnController implements IColumnController {
         try {
             await tableModel.findByIdAndUpdate(
                 tableId,
-                { '$pull': { columns: columnId } }
+                { '$pull': { columns: columnId } },
+                { new: true }
             )
             await columnModel.findByIdAndDelete(columnId)
             res.status(200).json({ ok: true, message: 'Column deleted' })

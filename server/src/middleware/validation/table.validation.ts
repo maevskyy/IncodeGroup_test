@@ -1,8 +1,7 @@
 import Joi from "joi";
 import { Request, Response, NextFunction } from "express";
 import { columnsSchema } from "./columns.validation.js";
-import winston from "winston/lib/winston/config/index.js";
-import { log } from "winston";
+
 
 const validateSchema = Joi.object({
     id: Joi.string().length(8).required(),

@@ -15,6 +15,5 @@ export const isBodyEmpty = (req: Request, res: Response, next: NextFunction) => 
         } else {
             next(error);
         }
-
     }
 };
