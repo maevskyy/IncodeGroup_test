@@ -1,0 +1,11 @@
+.app {
+	@apply text-white h-lvh bg-[#081018] flex justify-center items-center;
+}
+
+/* some shared styles */
+
+.button_style {
+	@apply flex items-center justify-center border
+  rounded-lg px-4 py-2 border-gray-600 cursor-pointer shadow-md
+  hover:shadow-green-800 hover:bg-[#23AC8B] transition-colors;
+}
