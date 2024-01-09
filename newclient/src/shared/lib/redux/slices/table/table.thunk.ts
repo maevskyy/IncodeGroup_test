@@ -4,6 +4,10 @@ import { defaultTableData } from "src/shared/assets/defaultTable";
 import { ITable } from "src/shared/types/table.types";
 
 export const asyncCreateDefaultTable = createAsyncThunk('table/asyncCreateDefaultTable', async () => {
+    const localData = localStorage.getItem('tables')
+
+    console.log(localData, 'this is in asynccreatedefaulttable')
+
     //create table
     const createRes = await axios.post('table', { ...defaultTableData })
     const createdTableId = createRes.data.table._id

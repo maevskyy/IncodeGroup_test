@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiCirclePlus } from 'react-icons/ci';
 import { IColumn } from 'src/shared/types/table.types';
 import AddColumnForm from './AddColumnForm';
@@ -11,6 +11,10 @@ type Props = {
 const AddColumn: React.FC<Props> = ({ addColumn }: Props) => {
 	const [showAddingForm, setShowAddingForm] = useState(false);
 	const [columnTitle, setColumnTitle] = useState('');
+
+	useEffect(() => {
+		console.log('this is in addcolumn');
+	}, []);
 
 	// creating new column
 	const add = () => {

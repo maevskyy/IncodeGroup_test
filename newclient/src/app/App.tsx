@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './styles/App.css';
 import { useEffect } from 'react';
 import Dashboard from 'src/pages/dashboard';
@@ -10,24 +10,28 @@ import { asyncCreateDefaultTable } from 'src/shared/lib/redux/slices/table/table
 import { getTablesFromLocal } from 'src/shared/lib/redux/slices/table/table.slice';
 
 const App = () => {
-	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	//axios config
 	axios.defaults.baseURL = 'http://localhost:8888';
 	axios.defaults.withCredentials = true;
 
 	useEffect(() => {
-		//creating dedault table and setting it to the local ( in the table.thunk )
-		//if tables already exist in the local - get them from there
-		const getFromLocal = localStorage.getItem('tables');
+		const fetchData = () => {
+			//creating default table and setting it to the local ( in the table.thunk )
+			//if tables already exist in the local - get them from there
+			const getFromLocal = localStorage.getItem('tables');
 
-		if (!getFromLocal) {
-			dispatch(asyncCreateDefaultTable());
-		}
-		if (getFromLocal) {
-			dispatch(getTablesFromLocal(JSON.parse(getFromLocal)));
-		}
-	}, [navigate, dispatch]);
+			if (getFromLocal) {
+				console.log('local');
+				dispatch(getTablesFromLocal(JSON.parse(getFromLocal)));
+			} else {
+				console.log('async');
+				dispatch(asyncCreateDefaultTable());
+			}
+		};
+
+		fetchData();
+	}, [dispatch]);
 
 	return (
 		<div className='app'>
@@ -35,16 +39,12 @@ const App = () => {
 				<Header />
 				<Routes>
 					<Route
-						path='/dashboards'
-						Component={Dashboard}
+						path='/table/:id'
+						Component={Table}
 					/>
 					<Route
 						path='/*'
 						Component={Dashboard}
-					/>
-					<Route
-						path='/table/:id'
-						Component={Table}
 					/>
 				</Routes>
 			</div>

@@ -7,6 +7,7 @@ const DashBoardAndInfo = ({ currentPathname }: { currentPathname: string[] }) =>
 	const tableFrontId = currentPathname[2];
 
 	const tablesData = useAppSelector((state) => state.tableReducer.data);
+	const userTablesData = useAppSelector((state) => state.searchedTableReducer.data);
 	const [titleAndId, setTitleAndId] = useState({
 		title: '',
 		id: '',
@@ -14,12 +15,15 @@ const DashBoardAndInfo = ({ currentPathname }: { currentPathname: string[] }) =>
 
 	useEffect(() => {
 		const currentTable = tablesData.find((table) => table.id == tableFrontId);
-		console.log(tablesData);
 
 		if (currentTable) {
 			setTitleAndId({ title: currentTable.title, id: currentTable.id });
 		}
-	}, [tablesData, tableFrontId]);
+		//if u searched for table that isnot yours
+		if (userTablesData) {
+			setTitleAndId({ title: userTablesData.title, id: userTablesData.id });
+		}
+	}, [tablesData, tableFrontId, userTablesData]);
 
 	return (
 		<div className='flex items-center gap-10'>
