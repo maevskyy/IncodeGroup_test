@@ -14,6 +14,7 @@ export interface IColumn {
 }
 
 export interface ITable {
+    _id?: string;
     id: string,
     title: string,
     columns: IColumn[]

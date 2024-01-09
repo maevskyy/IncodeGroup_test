@@ -2,7 +2,7 @@ import { generateId } from "../helpers/idGenerator";
 import { FcBookmark, FcCheckmark, FcSerialTasks } from 'react-icons/fc'
 import { IColumn } from 'src/shared/types/table.types'
 
-const defaultColums: IColumn[] = [
+export const defaultColums: IColumn[] = [
     {
         id: generateId(),
         title: 'To-Do',

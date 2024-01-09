@@ -1,4 +1,6 @@
 import { useAppSelector } from 'src/shared/lib/hooks/useRedux';
+import DashboardButtons from './components/DashboardButtons';
+import DashboardAddNew from './components/DashboardAddNew';
 
 const Dashboard = () => {
 	const {
@@ -14,9 +16,12 @@ const Dashboard = () => {
 		return <div>Loading..</div>;
 	} else {
 		return (
-			<div className='flex items-center justify-center w-full'>
-				<div className='w-[20em] flex flex-col gap-5 '></div>
-			</div>
+			<main className='flex flex-1 items-center justify-center w-full '>
+				<div className='w-[20em] flex flex-col gap-5 '>
+					<DashboardButtons tableData={tableData} />
+					<DashboardAddNew tablesQty={tableData.length} />
+				</div>
+			</main>
 		);
 	}
 };
